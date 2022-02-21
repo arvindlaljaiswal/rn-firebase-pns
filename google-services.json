@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "157696522195",
+    "project_id": "pntest-178e3",
+    "storage_bucket": "pntest-178e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:157696522195:android:bac678bac5b889eb272126",
+        "android_client_info": {
+          "package_name": "com.arvindlal.sampleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "157696522195-6doo79dg08m91fqe843jkrg2934ih30v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZBBDP9czlU56iN4c1Nm8hk3nQS18KHow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "157696522195-6doo79dg08m91fqe843jkrg2934ih30v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

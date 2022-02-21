@@ -75,7 +75,7 @@ export default function Home({}) {
       }
 
       const token = (await Notifications.getDevicePushTokenAsync()).data;
-      console.log("token", token);
+      console.log("token= ", token);
       setToken(token);
       return token;
     } else {

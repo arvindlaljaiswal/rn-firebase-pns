@@ -1,5 +1,10 @@
 name: EAS Build
-on: [pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - aj-easbuild
+# on: [pull_request]
 jobs:
   build:
     name: Install and build

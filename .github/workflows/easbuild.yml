@@ -2,7 +2,7 @@ name: EAS Build
 on:
   push:
     branches:
-      - *
+      *
 jobs:
   build:
     name: Install and build

@@ -1,7 +1,9 @@
 name: EAS Build
 
 on:
-  push: branches:[aj-easbuild]
+  push:
+    branches:
+      - aj-easbuild
 
 jobs:
   build:

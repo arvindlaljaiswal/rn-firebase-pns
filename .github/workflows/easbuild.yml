@@ -32,3 +32,9 @@ jobs:
 
       - name: Output of apk file path
         run: cat apkOutput.txt
+
+      - name: Upload apk path
+        uses: actions/upload-artifact@v2
+        with:
+          name: apkoutput
+          path: apkOutput.txt

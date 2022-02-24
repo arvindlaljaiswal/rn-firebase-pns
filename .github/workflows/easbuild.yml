@@ -2,8 +2,10 @@ name: EAS Build
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - ".github/workflows/easbuild.yml"
+    # branches:
+    # - main
 
 jobs:
   build:
@@ -26,6 +28,7 @@ jobs:
         run: yarn install
 
       - name: Build on EAS
-        run: eas build --platform all --profile staging --non-interactive > apkOutput.txt
+        run: eas build --platform android --profile staging --non-interactive > apkOutput.txt
 
-      - run: cat apkOutput.txt
+      - name: Output of apk file path
+        run: cat apkOutput.txt

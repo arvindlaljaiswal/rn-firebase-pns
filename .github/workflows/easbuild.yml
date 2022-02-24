@@ -3,7 +3,7 @@ name: EAS Build
 on:
   push:
     branches:
-      - aj-easbuild
+      - main
 
 jobs:
   build:
@@ -26,4 +26,6 @@ jobs:
         run: yarn install
 
       - name: Build on EAS
-        run: eas build --platform all --profile staging --non-interactive
+        run: eas build --platform all --profile staging --non-interactive > apkOutput.txt
+
+      - run: cat apkOutput.txt

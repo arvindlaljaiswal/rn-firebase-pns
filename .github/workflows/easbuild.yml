@@ -30,19 +30,16 @@ jobs:
       - name: Build on EAS
         run: eas build --platform android --profile staging --non-interactive > apkOutput.txt
 
-      - name: Output of apk file path
-        run: |
-          cat apkOutput.txt
-          echo $(cat apkOutput.txt | sed -n "s/^.*Build details \(.*\)$/\1/gp")
-      #     echo "APK_LOCATION=$(echo cat apkOutput.txt | sed -n 's/^.*Build details \(.*\)$/\1/gp')"
-      # - run: echo ${{ env.APK_LOCATION }}
+      - name: Output of apkOutput
+        run: cat apkOutput.txt
+      #     echo $(cat apkOutput.txt | sed -n "s/^.*Build details \(.*\)$/\1/gp")
 
-      - name: Get apk path
-        id: vars
-        run: echo ::set-output name=filepath::$(cat apkOutput.txt | sed -n 's/^.*Build details \(.*\)$/\1/gp')
+      # - name: Get apk path
+      #   id: vars
+      #   run: echo ::set-output name=filepath::$(cat apkOutput.txt | sed -n 's/^.*Build details \(.*\)$/\1/gp')
 
-      - name: Output
-        run: echo ${{ steps.vars.outputs.filepath }}
+      # - name: Output
+      #   run: echo ${{ steps.vars.outputs.filepath }}
 
       # - name: Upload apk path
       #   uses: actions/upload-artifact@v2

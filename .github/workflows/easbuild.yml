@@ -48,7 +48,7 @@ jobs:
       - name: Save APK path in variable
         id: vars
         run: |
-          echo "::set-output name=APK_PATH::$(cat apkOutput.txt | sed -n '/Android app:/{n;p;}')"
+          echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Android app:/{n;p;}')"
 
       - name: Print apk path
         run: echo ${{ steps.vars.outputs.APK_PATH }}

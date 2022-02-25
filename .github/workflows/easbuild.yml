@@ -46,12 +46,11 @@ jobs:
           echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
 
       - name: Save APK path in variable
-        id: vars
         run: |
-          echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Android app:/{n;p;}')"
+          echo APK_LOCATION=$(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp") >> $GITHUB_ENV
 
       - name: Print apk path
-        run: echo ${{ steps.vars.outputs.APK_PATH }}
+        run: echo "${{ env.APK_LOCATION }}"
 
       # - name: Upload apk path
       #   uses: actions/upload-artifact@v2

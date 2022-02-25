@@ -45,7 +45,7 @@ jobs:
       - name: build finished
         id: vars
         run: |
-          echo "::set-output name=BUILD_SUCCESS::$(cat apkOutput.txt | sed -n "s/^.*Build finished\(.*\)$/\1/gp")
+          echo "::set-output name=BUILD_SUCCESS::$(cat apkOutput.txt | sed -n 's/^.*Build finished\(.*\)$/\1/gp')"
 
       - name: Validate build
         run: |

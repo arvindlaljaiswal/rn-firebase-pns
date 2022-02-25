@@ -45,8 +45,13 @@ jobs:
         run: |
           echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
 
-      # - name: Output
-      #   run: echo ${{ steps.vars.outputs.filepath }}
+      - name: Save APK path in variable
+        id: vars
+        run: |
+          echo "::set-output name=APK_PATH::$(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp)"
+
+      - name: Print apk path
+        run: echo ${{ steps.vars.outputs.APK_PATH }}
 
       # - name: Upload apk path
       #   uses: actions/upload-artifact@v2

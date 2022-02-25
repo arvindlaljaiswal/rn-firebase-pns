@@ -42,7 +42,8 @@ jobs:
         run: cat apkOutput.txt
 
       - name: Get apk path
-        run: cat apkOutput.txt | sed -n "s/^.*Build details \(.*\)$/\1/gp"
+        run: |
+          echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
 
       # - name: Output
       #   run: echo ${{ steps.vars.outputs.filepath }}

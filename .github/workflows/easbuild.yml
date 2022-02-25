@@ -24,7 +24,15 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
+      - name: Cache yarn dependencies
+        id: cache-dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+
       - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: yarn install
 
       - name: Build on EAS
@@ -32,11 +40,9 @@ jobs:
 
       - name: Output of apkOutput
         run: cat apkOutput.txt
-      #     echo $(cat apkOutput.txt | sed -n "s/^.*Build details \(.*\)$/\1/gp")
 
-      # - name: Get apk path
-      #   id: vars
-      #   run: echo ::set-output name=filepath::$(cat apkOutput.txt | sed -n 's/^.*Build details \(.*\)$/\1/gp')
+      - name: Get apk path
+        run: cat apkOutput.txt | sed -n "s/^.*Build details \(.*\)$/\1/gp"
 
       # - name: Output
       #   run: echo ${{ steps.vars.outputs.filepath }}

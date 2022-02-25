@@ -38,6 +38,22 @@ jobs:
       - name: Build on EAS
         run: eas build --platform android --profile staging --non-interactive > apkOutput.txt
 
+      - name: build is success
+        run: |
+          $(cat apkOutput.txt | sed -n "s/^.*Build finished\(.*\)$/\1/gp")
+
+      - name: build finished
+        id: vars
+        run: |
+          echo "::set-output name=BUILD_SUCCESS::$(cat apkOutput.txt | sed -n "s/^.*Build finished\(.*\)$/\1/gp")
+
+      - name: Validate build
+        run: |
+          if [ -z ${{ steps.vars.outputs.BUILD_SUCCESS }} ] ; then
+            echo "APK build failed!"
+            exit 1
+          fi
+
       - name: Output of apkOutput
         run: cat apkOutput.txt
 

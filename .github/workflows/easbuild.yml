@@ -12,6 +12,10 @@ jobs:
     name: Install and build
     runs-on: ubuntu-latest
 
+    outputs:
+      ARTIFACT_NAME: ${{ steps.vars.outputs.ARTIFACT_NAME }}
+      SHORT_ARTIFACT_NAME: ${{ steps.vars.outputs.SHORT_ARTIFACT_NAME }}
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -36,24 +40,46 @@ jobs:
         run: yarn install
 
       - name: Build on EAS
-        run: eas build --platform android --profile staging --non-interactive > apkOutput.txt
-
-      - name: Output of apkOutput
-        run: cat apkOutput.txt
-
-      - name: Get apk path
         run: |
-          echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
-
-      - name: Save APK path in variable
+          eas build --platform android --profile staging --non-interactive > apkOutput.txt
+      - run: cat apkOutput.txt
+      - name: APK variables
+        id: vars
         run: |
-          echo APK_LOCATION=$(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp") >> $GITHUB_ENV
+          echo "::set-output name=SHORT_ARTIFACT_NAME::$(git rev-parse --short HEAD)"
+          echo "::set-output name=ARTIFACT_NAME::${{ secrets.APP_NAME }}-$(git rev-parse HEAD)"
+          echo "::set-output name=APK_ARTIFACT_NAME::${{ secrets.APP_NAME }}-$(git rev-parse HEAD).apk"
+          echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Android app:/{n;p;}')"
 
-      - name: Print apk path
-        run: echo "${{ env.APK_LOCATION }}"
+      - run: echo "${{join(steps.vars.outputs.*, ';')}}"
+
+      - name: Validate APK_LOCATION
+        run: |
+          if [ -z ${{ steps.vars.outputs.APK_LOCATION }} ] ; then
+            echo "APK build failed!"
+            exit 1
+          fi
+      # - name: Get apk path
+      #   run: |
+      #     echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
+
+      # - name: Save APK path in variable
+      #   run: |
+      #     echo APK_LOCATION=$(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp") >> $GITHUB_ENV
+
+      # - name: Print apk path
+      #   run: echo "${{ env.APK_LOCATION }}"
 
       # - name: Upload apk path
       #   uses: actions/upload-artifact@v2
       #   with:
       #     name: apkoutput
       #     path: apkOutput.txt
+
+      - name: Uploading apk to sauce-storage
+        run: |
+          curl -L ${{ steps.vars.outputs.APK_LOCATION }} -o ${{ steps.vars.outputs.APK_ARTIFACT_NAME }}
+          curl -u "${{secrets.SAUCE_USERNAME}}:${{secrets.SAUCE_ACCESS_KEY}}" --location \
+          --request POST 'https://api.eu-central-1.saucelabs.com/v1/storage/upload' \
+          --form 'payload=@./${{steps.vars.outputs.APK_ARTIFACT_NAME}}' \
+          --form 'name=${{steps.vars.outputs.APK_ARTIFACT_NAME}}'

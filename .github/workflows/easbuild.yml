@@ -41,7 +41,7 @@ jobs:
 
       - name: Build on EAS
         run: |
-          eas build --platform android --profile staging --non-interactive > apkOutput.txt
+          eas build --platform android --profile ${{ secrets.PROFILE }} --non-interactive > apkOutput.txt
       - run: cat apkOutput.txt
       - name: APK variables
         id: vars
@@ -50,7 +50,7 @@ jobs:
           echo "::set-output name=ARTIFACT_NAME::${{ secrets.APP_NAME }}-$(git rev-parse HEAD)"
           echo "::set-output name=APK_ARTIFACT_NAME::${{ secrets.APP_NAME }}-$(git rev-parse HEAD).apk"
           echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Build details:/{n;p;}')"
-
+      - run: echo "${{ steps.vars.outputs.APK_LOCATION }}"
       - run: echo "${{join(steps.vars.outputs.*, ';')}}"
 
       - name: Validate APK_LOCATION

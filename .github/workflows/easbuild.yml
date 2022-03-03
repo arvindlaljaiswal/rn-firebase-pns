@@ -61,23 +61,6 @@ jobs:
             exit 1
           fi
 
-      # - name: Get apk path
-      #   run: |
-      #     echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")
-
-      # - name: Save APK path in variable
-      #   run: |
-      #     echo APK_LOCATION=$(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp") >> $GITHUB_ENV
-
-      # - name: Print apk path
-      #   run: echo "${{ env.APK_LOCATION }}"
-
-      # - name: Upload apk path
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: apkoutput
-      #     path: apkOutput.txt
-
       - name: Uploading apk to sauce-storage
         run: |
           curl -L ${{ steps.vars.outputs.APK_LOCATION }} -o ${{ steps.vars.outputs.APK_ARTIFACT_NAME }}

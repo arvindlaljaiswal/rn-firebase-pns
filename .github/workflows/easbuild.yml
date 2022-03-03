@@ -60,6 +60,7 @@ jobs:
             echo "APK build failed!"
             exit 1
           fi
+
       # - name: Get apk path
       #   run: |
       #     echo $(cat apkOutput.txt | sed -n "s/^.*Build details: \(.*\)$/\1/gp")

@@ -49,7 +49,7 @@ jobs:
           echo "::set-output name=SHORT_ARTIFACT_NAME::$(git rev-parse --short HEAD)"
           echo "::set-output name=ARTIFACT_NAME::sampleapp-$(git rev-parse HEAD)"
           echo "::set-output name=APK_ARTIFACT_NAME::sampleapp-$(git rev-parse HEAD).apk"
-          echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Build details:/{n;p;}')"
+          echo "::set-output name=APK_LOCATION::$(cat apkOutput.txt | sed -n '/Android app:/{n;p;}')"
 
       - run: echo "${{ steps.vars.outputs.APK_LOCATION }}"
       - run: echo "${{join(steps.vars.outputs.*, ';')}}"
